@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<launch>
+
+  <!-- Lanzar Gazebo con un mundo vacío -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch"/>
+
+  <!-- Cargar el modelo URDF como parámetro -->
+  <param name="robot_description" command="$(find xacro)/xacro $(find proyecto_final)/urdf/robot_version1.urdf" />
+
+  <!-- Spawn del robot en el mundo de Gazebo -->
+  <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" output="screen"
+        args="-param robot_description -urdf -model robot_version1" />
+
+  <!-- Publicador del estado del robot -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+
+  <!-- Nodo personalizado que publica joint_states desde cinemática inversa -->
+  <node name="test_ik_node" pkg="proyecto_final" type="test_ikine.py" output="screen" />
+
+</launch>
